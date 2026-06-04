@@ -3,6 +3,7 @@
 import asyncio
 from contextlib import asynccontextmanager
 import json
+from typing import Any, cast
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -49,7 +50,9 @@ def _make_progress(kp_id="kp1", kp_name="Test KP") -> LearningProgress:
             id="m1",
             name="M1",
             order=0,
-            knowledge_points=[KnowledgePoint(id=kp_id, name=kp_name, type="concept", module_id="m1")],
+            knowledge_points=[
+                KnowledgePoint(id=kp_id, name=kp_name, type="concept", module_id="m1")
+            ],
         )
     ]
     progress.current_module_id = "m1"
@@ -66,7 +69,7 @@ def _make_capability(llm_response: str) -> GuidedLearningCapability:
     cap._scheduler = None
     cap._kb_name = None
     cap._kb_base_dir = None
-    cap._call_llm = AsyncMock(return_value=llm_response)
+    cast(Any, cap)._call_llm = AsyncMock(return_value=llm_response)
     return cap
 
 

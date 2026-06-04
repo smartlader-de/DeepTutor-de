@@ -2,6 +2,7 @@
 
 import asyncio
 from contextlib import asynccontextmanager
+from typing import Any, cast
 from unittest.mock import AsyncMock
 
 import pytest
@@ -41,7 +42,7 @@ def _make_capability() -> GuidedLearningCapability:
     cap._scheduler = None
     cap._kb_name = None
     cap._kb_base_dir = None
-    cap._call_llm = AsyncMock(side_effect=RuntimeError("LLM unavailable"))
+    cast(Any, cap)._call_llm = AsyncMock(side_effect=RuntimeError("LLM unavailable"))
     return cap
 
 
@@ -95,7 +96,7 @@ async def test_error_diagnosis_llm_timeout_advances_to_module_test():
         await asyncio.sleep(1)
         return '{"diagnoses": []}'
 
-    cap._call_llm = AsyncMock(side_effect=_slow_llm)
+    cast(Any, cap)._call_llm = AsyncMock(side_effect=_slow_llm)
     progress = _make_progress()
     stream = FakeStream()
 
